@@ -35,4 +35,5 @@ Examples:
 #### Known bugs/(features?):
 1. Variables are case-sensitive (feature)
 2. /show expression doesnt work, but d := expression, then /show d works. (bug)
+3. Defined variables are deleted on output (feature: but I plan to implement a saved state, to fix this.)
 
