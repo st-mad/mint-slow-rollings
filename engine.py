@@ -91,6 +91,7 @@ class M_Parser():
             self.variables = self.variables | dictionary
         self.command_queue = []
         tokens = my_lex.get_tokens()
+
         def p_statement(p):
             '''statement  : command
                    | equation
@@ -285,7 +286,7 @@ class Engine:
                     print(variables[i])
                     self.visualiser.show_element(variables[i]) 
                     # print(variables[i])
-            elif command[0] == '/make_revealing':
+            elif command[0] == '/makerevealing':
                 print("Making tree pair revealing")
                 for i in command[1]:
                     variables[i] = variables[i].make_revealing()
