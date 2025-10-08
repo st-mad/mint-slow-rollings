@@ -1,49 +1,38 @@
-## Usage:
-### V: 
-This class has all the code for representing elements of V. 
+### Prerequisites:
+```
+pip install ply matplotlib networkx pygraphviz pydot
+```
+### Usage:
+Run maincli.py for the intended command line usage.
 
-Elements of V can be instantiated in multiple ways.
+Commands:
+/show variable\_name : plots the tree pair associated with the variable\_name 
 
-Ordered antichains:
+We allow definition of group elements using explicit antichains and from dfs bitstrings.
+
+/def\_from\_achains(antichain1,antichain2, permutation) : where antichains are given as comma separated square bracketed lists of binary words enclosed in '' or "". Examples ["0", "1"] or ['1','0']. And the permutation is given as a square bracket comma separated list of numbers. Examples [0,1,2,3]
+/def\_from\_dfs(antichain1, antichain2, dfs_bitstring) : TODO explain dfsbitstring
+
+The regular group operations are given by:
+a\*b : compose
+\!a : invert
+a^b : conjugation
+
+We define a new variable by ':='
+```
+var_name := expression
 ``` 
-v = V(D, R)
-```
-D and R are lists of words on {0,1} that form a complete antichain. The ith index of D is mapped to the ith index of R.
 
-DFS notation: 
-``` 
-v = V.init_with_DFS(a, b, perm)
-```
-Uses binary strings to encode the structure of a binary tree.
+Where the var\_name is a string of characters not starting with a number and the expression is any combination of brackettings with '()' and our group operations done on existing variables.
 
-Lexicographic antichains:
-``` 
-v = V(achain_D, achain_R, perm)
+We may also see the action of a tree pair on a finite bitstring by:
+```
+bitstring | var_name 
+Examples: 
+`0101`|f, for f being previously defined with := .
 ```
 
-Permutations are represented as a list of integers (0 indexed or 1 indexed).
-
-### Chains: 
-```
-Chains.generate_chains(v)
-```
-Generates a list of leaf chains.
-
-Code for printing chains:
-```
-for chain in ch:
-    print(chain.chain, chain.type)
-
-```
-
-#### Making revealing pairs:
-```
-Chains.make_revealing(v)
-```
-or
-```
-Chains.make_revealing(v,g)
-```
-for an optional graphics component.
-
+#### Known bugs/(features?):
+1. Variables are case-sensitive (feature)
+2. /show expression doesnt work, but d := expression, then /show d works. (bug)
 

@@ -20,8 +20,11 @@ engine = eng.Engine(startup_var=examples)
 running = True
 # running = False
 while running:
-    print(list(engine.get_variables().keys()))
-    engine.exec_command()
-    string = input()
-    res = engine.parse_string(string, debug=False)
-    print(res)
+    try:
+        print(list(engine.get_variables().keys()))
+        engine.exec_command()
+        string = input()
+        res = engine.parse_string(string, debug=False)
+        # print(res)
+    except Exception:
+        pass

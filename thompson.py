@@ -17,8 +17,6 @@ class V:
         self.R = R
         self.validate()
         self.permutation = self._get_perm(R)
-
-
     
     def __repr__(self):  
         """Used for printing the group element's data"""
@@ -33,6 +31,27 @@ class V:
         S = sorted(P)
         perm = [S.index(p) for p in P]
         return perm
+
+    def _swap(self, A, i,j):
+        if i == j:
+            return
+        temp = A[i]
+        A[i] = A[j]
+        A[j] = temp
+
+    def _normalise_permutation(self):
+        """After certain procedures the lists V.D may become unsorted, here we want to maintain that D is sorted while respecting our permutation."""
+
+        permutation = self._get_perm(self.D)
+        # we want to invert this permutation on V.D and V.R. This should sort V.D and potentially scramble V.R
+        for i in range(len(permutation)):
+            j = permutation[i]
+            if i != j:
+                self._swap(self.D, i, j)
+                self._swap(self.R, i, j)
+                self._swap(permutation, i, j)
+
+
 
     @classmethod 
     def init_with_DFS(self,dfsD, dfsR, perm):
@@ -277,7 +296,10 @@ class V:
         Returns:
             V: Returns a^-1
         """        
-        return V(a.R, a.D)
+        inverted_treepair = V(a.R, a.D)
+        # print(inverted_treepair)
+        inverted_treepair._normalise_permutation()
+        return inverted_treepair
 
     @classmethod
     def product(self, a, b):

@@ -167,6 +167,7 @@ class M_Parser():
 
         def p_param(p):
             # this param may not be just VAR
+            # why isnt a param an expression
             '''param : list 
                      | VAR 
                      | NUMBER 
@@ -183,12 +184,6 @@ class M_Parser():
         # Error rule for syntax errors
         def p_error(p):
             print("Syntax error in input!", p)
-            # print("Whoa. You are seriously hosed.")
-            # if not p:
-                # print("End of File!")
-                # return
-
-            # # Read ahead looking for a closing '}'
             # while True:
                 # tok = self.parser.token()             # Get the next token
                 # if not tok or tok.type == 'RBRACE':
