@@ -7,6 +7,7 @@ Run maincli.py for the intended command line usage.
 
 Commands:
 /show variable\_name : plots the tree pair associated with the variable\_name 
+/make\_revealing() : shockingly not yet implemented (will fix this)
 
 We allow definition of group elements using explicit antichains and from dfs bitstrings.
 

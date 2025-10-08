@@ -285,6 +285,11 @@ class Engine:
                     print(variables[i])
                     self.visualiser.show_element(variables[i]) 
                     # print(variables[i])
+            elif command[0] == '/make_revealing':
+                print("Making tree pair revealing")
+                for i in command[1]:
+                    variables[i] = variables[i].make_revealing()
+                    
                     
 
 
