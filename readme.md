@@ -21,7 +21,7 @@ The regular group operations are given by:
 ```
 a*b : compose
 !a : invert
-a^b : conjugation
+a^b : conjugation (b^-1 * a * b)
 ```
 
 We define a new variable by ':='
@@ -29,7 +29,7 @@ We define a new variable by ':='
 var_name := expression
 ``` 
 
-Where the var\_name is a string of characters not starting with a number and the expression is any combination of brackettings with '()' and our group operations done on existing variables.
+Where the var\_name is a string of alpha-numeric characters not starting with a number and the expression is any combination of brackettings with '()' and our group operations done on existing variables.
 
 We may also see the action of a tree pair on a finite bitstring by:
 ```
@@ -42,4 +42,6 @@ Examples:
 1. Variables are case-sensitive (feature)
 2. /show expression doesnt work, but d := expression, then /show d works. (bug)
 3. Defined variables are deleted on output (feature: but I plan to implement a saved state, to fix this.)
+4. The current restrictions on what is a variable or an expression and the restrictions on what characters are allowed are a bit inconsistent. (bug: This requires messing with the parser's grammar but I will change this to be more consistent.)
+5. The cli doesn't allow the use of arrow keys to edit input. (bug: the cli will eventually be replaced with a more functional UI)
 
