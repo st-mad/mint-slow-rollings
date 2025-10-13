@@ -335,6 +335,7 @@ class Visualiser:
 
         perm = v.permutation
 
+        ###### This is incorrect ######
         leaves_of_L = sorted([v for v, d in L.out_degree() if d == 0])
         L_labels = {}
         for i in range(len(leaves_of_L)):

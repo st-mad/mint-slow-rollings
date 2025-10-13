@@ -34,15 +34,24 @@ examples = {
             "Doof" : th.V(th.V.DFS_to_antichain("110111000011000"),th.V.DFS_to_antichain("110111000011000"))
 }
 
+
+
+
 ###################### Write code here #########################
+
 #to engage graphics, use g.clear_entities() then g.add_entity({element of V})
 # a = examples["Monk"]
 # a = th.V(["0","10","1100","1101","111"],["0","11","1011","1010","100"])
-# ch = th.Chains.generate_chains(a)
-# for c in ch:
-    # print(c.chain, c.type)
-# # th.Chains.make_revealing(a, g=g, debug=True)
-# g.add_entity(a)
+a = examples["Kermit"]
+ch = th.Chains.generate_chains(a)
+for c in ch:
+    print(c.chain, c.type)
+    
+print(a.D)
+print(sorted(a.R))
+print(a.R)
+print(a.permutation)
+# th.Chains.make_revealing(a, g=g, debug=True)
 
 # a = th.V(["0","100","101","11"],["1","010","00","011"])
 # ch = th.Chains.generate_chains(a)

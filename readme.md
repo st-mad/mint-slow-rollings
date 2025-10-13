@@ -25,7 +25,7 @@ The regular group operations are given by:
 a*b : compose
 !a : invert
 a^b : conjugation (b^-1 * a * b)
-a#b : commutators (a^-1 * b^-1 * a * b)
+a#b : commutators (a^-1 * b^-1 * a * b) (TODO)
 ```
 
 We define a new variable by ':='
@@ -48,4 +48,6 @@ Examples:
 3. Variables are not saved on stopping the script.(feature: but I plan to implement a saved state, to fix this.)
 4. The current restrictions on what is a variable or an expression and the restrictions on what characters are allowed are a bit inconsistent. (bug: This requires messing with the parser's grammar but I will change this to be more consistent.)
 5. The cli doesn't allow the use of arrow keys to edit input. (bug: the cli will eventually be replaced with a more functional UI)
+6. The labelling of leaves in the tree pair drawing is incorrect! (bug: major)
+7. /show command does not work on certain terminals. (bug: working on a fix)
 
