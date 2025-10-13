@@ -1,4 +1,7 @@
 ### Prerequisites:
+
+Graphviz required:
+https://pygraphviz.github.io/documentation/stable/install.html
 ```
 pip install ply matplotlib networkx pygraphviz pydot
 ```
