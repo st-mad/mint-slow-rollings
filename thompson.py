@@ -141,6 +141,7 @@ class V:
             raise Exception("element must be a bijection")
         if not self.is_antichain(self.D) or not self.is_antichain(self.R):
             raise Exception("D and R must be antichains " + str(self.is_antichain(self.D)) + " " + str(self.is_antichain(self.R)))
+        # We do not check if the antichain is complete (TODO)
 
 
     def apply(self, string):
@@ -398,11 +399,11 @@ class V:
         """Conjugates g with c.
 
         Args:
-            g (_type_): _description_
-            c (_type_): _description_
+            g (V): The tree pair in V
+            c (V): The tree pair in V 
 
         Returns:
-            V: returns g^c
+            V: returns g^c = c^-1 g c 
         """
         # returns c^-1 g c (right actions for now)
         return self.product(self.product(self.invert(c), g), c)
@@ -667,7 +668,6 @@ class Chains:
         # returns false if types contain any fragmentation labels
         return not ("SEF" in types or "SF" in types or "EF" in types)
 
-    #TODO
     @classmethod
     def make_revealing(self, function, g=None, debug=False):
         """The main algorithm that makes the given tree pair revealing.

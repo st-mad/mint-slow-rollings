@@ -290,8 +290,6 @@ class Engine:
                 print("Making tree pair revealing")
                 for i in command[1]:
                     variables[i] = variables[i].make_revealing()
-                    
-                    
 
 
 class Visualiser:
