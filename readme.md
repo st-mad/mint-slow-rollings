@@ -17,11 +17,15 @@ Run maincli.py for the intended command line usage.
 We allow definition of group elements using explicit antichains and from dfs bitstrings, using inline commands.
 
 ```
-def_from_achains(antichain1,antichain2, permutation) : where antichains are given as comma separated square bracketed lists of binary words enclosed in '' or "". Examples ["0", "1"] or ['1','0']. And the permutation is given as a square bracket comma separated list of numbers. Examples [0,1,2,3]
-def_from_dfs(dfs_bitstring1, dfs_bitstring2, permutation) : TODO explain dfsbitstring
-
+def_from_achains(antichain1,antichain2, permutation)
+```
+where antichains are given as comma separated square bracketed lists of binary words enclosed in '' or "". Examples ["0", "1"] or ['1','0']. And the permutation is given as a square bracket comma separated list of numbers. Examples [0,1,2,3]
+```
+def_from_dfs(dfs_bitstring1, dfs_bitstring2, permutation) : 
+```
+TODO explain dfsbitstring
+```
 b := def_from_achains(...)
-The regular group operations are given by:
 ```
 #### Other inline commands:
 ```
