@@ -3,10 +3,10 @@
 Graphviz required:
 https://pygraphviz.github.io/documentation/stable/install.html
 ```
-pip install ply matplotlib networkx pygraphviz pydot
+pip install ply matplotlib networkx pygraphviz pydot tkinter
 ```
 ### Usage:
-Run maincli.py for the intended command line usage.
+Run ui.py for the GUI. (intended)
 
 #### Slash commands:
 ```
