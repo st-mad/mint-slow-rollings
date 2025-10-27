@@ -346,8 +346,6 @@ class Visualiser:
         # checking if our tree passes the antichain boundary
         if root != "empty" and len(root) > len(max(antichain, key=len)):
             # print(root, antichain, max(antichain))
-
-            ### TODO this breaks for the identity as well [],[] tree pair
             raise Exception("Antichain is incomplete.")
         if root not in antichain:
             if root != "empty":
@@ -374,6 +372,8 @@ class Visualiser:
         G = nx.DiGraph()
         root = "empty"
         G.add_node(root)
+        if len(antichain) == 0:
+            return G
         self._rec_digraph_from_antichain(antichain, root, G)
         return G
 

@@ -178,16 +178,16 @@ class UI:
         if command != None:
             variables = self.engine.get_variables()
             # print(command)
+            self.log.insert(tk.END, f"Executing command {command}\n")
             if command[0] == "/show":
-                print("executing command", command, variables[command[1][0]])
-                self.log.insert(tk.END, f"Executing command {command}")
+                # print("executing command", command, variables[command[1][0]])
                 for i in command[1]:
                     # self.visualiser.show_element(variables[i]) 
                     self.engine.visualiser.show_element_embedded(variables[i], fig=self.fig,ax=self.axes) 
 
             elif command[0] == '/makerevealing':
                 # I want to change this one to an inline command
-                print("Making tree pair revealing")
+                # print("Making tree pair revealing")
                 for i in command[1]:
                     variables[i] = variables[i].make_revealing()
             elif command[0] == '/clear':
@@ -201,6 +201,13 @@ class UI:
             elif command[0] == "/var":
                 self.log.insert(tk.END, "Defined variables:\n")
                 self.log.insert(tk.END, str(list(self.engine.get_variables().keys())) + '\n')
+            elif command[0] == "/print":
+                for i in command[1]:
+                    # self.visualiser.show_element(variables[i]) 
+                    self.log.insert(tk.END, str(variables[i]) + '\n')
+
+
+
 
         self.canvas.draw_idle()
         self.root.update_idletasks()
