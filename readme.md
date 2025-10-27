@@ -8,10 +8,12 @@ pip install ply matplotlib networkx pygraphviz pydot
 ### Usage:
 Run maincli.py for the intended command line usage.
 
-Commands:
+#### Slash commands:
 ```
 /show variable_name : plots the tree pair associated with the variable_name 
 ```
+#### Inline commands: 
+
 We allow definition of group elements using explicit antichains and from dfs bitstrings, using inline commands.
 
 ```
@@ -21,11 +23,12 @@ def_from_dfs(dfs_bitstring1, dfs_bitstring2, permutation) : TODO explain dfsbits
 b := def_from_achains(...)
 The regular group operations are given by:
 ```
-Other inline commands:
+#### Other inline commands:
 ```
 revealing(varname) : returns a revealing pair for the given tree pair. 
 ```
 
+#### Algebraic operations:
 ```
 a*b : compose
 !a : invert
