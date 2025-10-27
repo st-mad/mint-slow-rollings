@@ -346,6 +346,8 @@ class Visualiser:
         # checking if our tree passes the antichain boundary
         if root != "empty" and len(root) > len(max(antichain, key=len)):
             # print(root, antichain, max(antichain))
+
+            ### TODO this breaks for the identity as well [],[] tree pair
             raise Exception("Antichain is incomplete.")
         if root not in antichain:
             if root != "empty":
