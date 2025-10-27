@@ -21,7 +21,7 @@ def_from_dfs(dfs_bitstring1, dfs_bitstring2, permutation) : TODO explain dfsbits
 ```
 Usage:
 ```
-b := def_from_achains(...)```
+b := def_from_achains(...)
 The regular group operations are given by:
 ```
 Other inline commands:
