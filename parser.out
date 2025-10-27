@@ -11,55 +11,58 @@ Rule 1     statement -> command
 Rule 2     statement -> equation
 Rule 3     statement -> expression
 Rule 4     command -> GENCOMMAND params
-Rule 5     equation -> VAR DEFINEEQUALS expression
-Rule 6     expression -> expression COMPOSE expression
-Rule 7     expression -> LPAREN expression RPAREN
-Rule 8     expression -> NEG expression
-Rule 9     expression -> expression CONJ expression
-Rule 10    expression -> VAR
-Rule 11    expression -> DEFCOMMAND args
-Rule 12    word -> word APPLY expression
-Rule 13    word -> BSTRING
-Rule 14    args -> LPAREN params RPAREN
-Rule 15    list -> LSQBRACKET params RSQBRACKET
-Rule 16    params -> params COMMA param
-Rule 17    params -> param
-Rule 18    param -> list
-Rule 19    param -> VAR
-Rule 20    param -> NUMBER
-Rule 21    param -> BSTRING
+Rule 5     command -> GENCOMMAND
+Rule 6     equation -> VAR DEFINEEQUALS expression
+Rule 7     expression -> expression COMPOSE expression
+Rule 8     expression -> LPAREN expression RPAREN
+Rule 9     expression -> NEG expression
+Rule 10    expression -> expression CONJ expression
+Rule 11    expression -> expression COMMUTATOR expression
+Rule 12    expression -> VAR
+Rule 13    expression -> DEFCOMMAND args
+Rule 14    word -> word APPLY expression
+Rule 15    word -> BSTRING
+Rule 16    args -> LPAREN params RPAREN
+Rule 17    list -> LSQBRACKET params RSQBRACKET
+Rule 18    params -> params COMMA param
+Rule 19    params -> param
+Rule 20    param -> list
+Rule 21    param -> VAR
+Rule 22    param -> NUMBER
+Rule 23    param -> BSTRING
 
 Terminals, with rules where they appear
 
-APPLY                : 12
-BSTRING              : 13 21
+APPLY                : 14
+BSTRING              : 15 23
 CHECKEQUALS          : 
-COMMA                : 16
-COMPOSE              : 6
-CONJ                 : 9
-DEFCOMMAND           : 11
-DEFINEEQUALS         : 5
-GENCOMMAND           : 4
-LPAREN               : 7 14
-LSQBRACKET           : 15
-NEG                  : 8
-NUMBER               : 20
-RPAREN               : 7 14
-RSQBRACKET           : 15
-VAR                  : 5 10 19
+COMMA                : 18
+COMMUTATOR           : 11
+COMPOSE              : 7
+CONJ                 : 10
+DEFCOMMAND           : 13
+DEFINEEQUALS         : 6
+GENCOMMAND           : 4 5
+LPAREN               : 8 16
+LSQBRACKET           : 17
+NEG                  : 9
+NUMBER               : 22
+RPAREN               : 8 16
+RSQBRACKET           : 17
+VAR                  : 6 12 21
 error                : 
 
 Nonterminals, with rules where they appear
 
-args                 : 11
+args                 : 13
 command              : 1
 equation             : 2
-expression           : 3 5 6 6 7 8 9 9 12
-list                 : 18
-param                : 16 17
-params               : 4 14 15 16
+expression           : 3 6 7 7 8 9 10 10 11 11 14
+list                 : 20
+param                : 18 19
+params               : 4 16 17 18
 statement            : 0
-word                 : 12
+word                 : 14
 
 Parsing method: LALR
 
@@ -70,13 +73,15 @@ state 0
     (2) statement -> . equation
     (3) statement -> . expression
     (4) command -> . GENCOMMAND params
-    (5) equation -> . VAR DEFINEEQUALS expression
-    (6) expression -> . expression COMPOSE expression
-    (7) expression -> . LPAREN expression RPAREN
-    (8) expression -> . NEG expression
-    (9) expression -> . expression CONJ expression
-    (10) expression -> . VAR
-    (11) expression -> . DEFCOMMAND args
+    (5) command -> . GENCOMMAND
+    (6) equation -> . VAR DEFINEEQUALS expression
+    (7) expression -> . expression COMPOSE expression
+    (8) expression -> . LPAREN expression RPAREN
+    (9) expression -> . NEG expression
+    (10) expression -> . expression CONJ expression
+    (11) expression -> . expression COMMUTATOR expression
+    (12) expression -> . VAR
+    (13) expression -> . DEFCOMMAND args
 
     GENCOMMAND      shift and go to state 5
     VAR             shift and go to state 6
@@ -112,411 +117,486 @@ state 3
 state 4
 
     (3) statement -> expression .
-    (6) expression -> expression . COMPOSE expression
-    (9) expression -> expression . CONJ expression
+    (7) expression -> expression . COMPOSE expression
+    (10) expression -> expression . CONJ expression
+    (11) expression -> expression . COMMUTATOR expression
 
     $end            reduce using rule 3 (statement -> expression .)
     COMPOSE         shift and go to state 10
     CONJ            shift and go to state 11
+    COMMUTATOR      shift and go to state 12
 
 
 state 5
 
     (4) command -> GENCOMMAND . params
-    (16) params -> . params COMMA param
-    (17) params -> . param
-    (18) param -> . list
-    (19) param -> . VAR
-    (20) param -> . NUMBER
-    (21) param -> . BSTRING
-    (15) list -> . LSQBRACKET params RSQBRACKET
+    (5) command -> GENCOMMAND .
+    (18) params -> . params COMMA param
+    (19) params -> . param
+    (20) param -> . list
+    (21) param -> . VAR
+    (22) param -> . NUMBER
+    (23) param -> . BSTRING
+    (17) list -> . LSQBRACKET params RSQBRACKET
 
-    VAR             shift and go to state 15
-    NUMBER          shift and go to state 16
-    BSTRING         shift and go to state 17
-    LSQBRACKET      shift and go to state 18
+    $end            reduce using rule 5 (command -> GENCOMMAND .)
+    VAR             shift and go to state 16
+    NUMBER          shift and go to state 17
+    BSTRING         shift and go to state 18
+    LSQBRACKET      shift and go to state 19
 
-    params                         shift and go to state 12
-    param                          shift and go to state 13
-    list                           shift and go to state 14
+    params                         shift and go to state 13
+    param                          shift and go to state 14
+    list                           shift and go to state 15
 
 state 6
 
-    (5) equation -> VAR . DEFINEEQUALS expression
-    (10) expression -> VAR .
+    (6) equation -> VAR . DEFINEEQUALS expression
+    (12) expression -> VAR .
 
-    DEFINEEQUALS    shift and go to state 19
-    COMPOSE         reduce using rule 10 (expression -> VAR .)
-    CONJ            reduce using rule 10 (expression -> VAR .)
-    $end            reduce using rule 10 (expression -> VAR .)
+    DEFINEEQUALS    shift and go to state 20
+    COMPOSE         reduce using rule 12 (expression -> VAR .)
+    CONJ            reduce using rule 12 (expression -> VAR .)
+    COMMUTATOR      reduce using rule 12 (expression -> VAR .)
+    $end            reduce using rule 12 (expression -> VAR .)
 
 
 state 7
 
-    (7) expression -> LPAREN . expression RPAREN
-    (6) expression -> . expression COMPOSE expression
-    (7) expression -> . LPAREN expression RPAREN
-    (8) expression -> . NEG expression
-    (9) expression -> . expression CONJ expression
-    (10) expression -> . VAR
-    (11) expression -> . DEFCOMMAND args
+    (8) expression -> LPAREN . expression RPAREN
+    (7) expression -> . expression COMPOSE expression
+    (8) expression -> . LPAREN expression RPAREN
+    (9) expression -> . NEG expression
+    (10) expression -> . expression CONJ expression
+    (11) expression -> . expression COMMUTATOR expression
+    (12) expression -> . VAR
+    (13) expression -> . DEFCOMMAND args
 
     LPAREN          shift and go to state 7
     NEG             shift and go to state 8
-    VAR             shift and go to state 21
+    VAR             shift and go to state 22
     DEFCOMMAND      shift and go to state 9
 
-    expression                     shift and go to state 20
+    expression                     shift and go to state 21
 
 state 8
 
-    (8) expression -> NEG . expression
-    (6) expression -> . expression COMPOSE expression
-    (7) expression -> . LPAREN expression RPAREN
-    (8) expression -> . NEG expression
-    (9) expression -> . expression CONJ expression
-    (10) expression -> . VAR
-    (11) expression -> . DEFCOMMAND args
+    (9) expression -> NEG . expression
+    (7) expression -> . expression COMPOSE expression
+    (8) expression -> . LPAREN expression RPAREN
+    (9) expression -> . NEG expression
+    (10) expression -> . expression CONJ expression
+    (11) expression -> . expression COMMUTATOR expression
+    (12) expression -> . VAR
+    (13) expression -> . DEFCOMMAND args
 
     LPAREN          shift and go to state 7
     NEG             shift and go to state 8
-    VAR             shift and go to state 21
+    VAR             shift and go to state 22
     DEFCOMMAND      shift and go to state 9
 
-    expression                     shift and go to state 22
+    expression                     shift and go to state 23
 
 state 9
 
-    (11) expression -> DEFCOMMAND . args
-    (14) args -> . LPAREN params RPAREN
+    (13) expression -> DEFCOMMAND . args
+    (16) args -> . LPAREN params RPAREN
 
-    LPAREN          shift and go to state 24
+    LPAREN          shift and go to state 25
 
-    args                           shift and go to state 23
+    args                           shift and go to state 24
 
 state 10
 
-    (6) expression -> expression COMPOSE . expression
-    (6) expression -> . expression COMPOSE expression
-    (7) expression -> . LPAREN expression RPAREN
-    (8) expression -> . NEG expression
-    (9) expression -> . expression CONJ expression
-    (10) expression -> . VAR
-    (11) expression -> . DEFCOMMAND args
+    (7) expression -> expression COMPOSE . expression
+    (7) expression -> . expression COMPOSE expression
+    (8) expression -> . LPAREN expression RPAREN
+    (9) expression -> . NEG expression
+    (10) expression -> . expression CONJ expression
+    (11) expression -> . expression COMMUTATOR expression
+    (12) expression -> . VAR
+    (13) expression -> . DEFCOMMAND args
 
     LPAREN          shift and go to state 7
     NEG             shift and go to state 8
-    VAR             shift and go to state 21
-    DEFCOMMAND      shift and go to state 9
-
-    expression                     shift and go to state 25
-
-state 11
-
-    (9) expression -> expression CONJ . expression
-    (6) expression -> . expression COMPOSE expression
-    (7) expression -> . LPAREN expression RPAREN
-    (8) expression -> . NEG expression
-    (9) expression -> . expression CONJ expression
-    (10) expression -> . VAR
-    (11) expression -> . DEFCOMMAND args
-
-    LPAREN          shift and go to state 7
-    NEG             shift and go to state 8
-    VAR             shift and go to state 21
+    VAR             shift and go to state 22
     DEFCOMMAND      shift and go to state 9
 
     expression                     shift and go to state 26
 
+state 11
+
+    (10) expression -> expression CONJ . expression
+    (7) expression -> . expression COMPOSE expression
+    (8) expression -> . LPAREN expression RPAREN
+    (9) expression -> . NEG expression
+    (10) expression -> . expression CONJ expression
+    (11) expression -> . expression COMMUTATOR expression
+    (12) expression -> . VAR
+    (13) expression -> . DEFCOMMAND args
+
+    LPAREN          shift and go to state 7
+    NEG             shift and go to state 8
+    VAR             shift and go to state 22
+    DEFCOMMAND      shift and go to state 9
+
+    expression                     shift and go to state 27
+
 state 12
 
-    (4) command -> GENCOMMAND params .
-    (16) params -> params . COMMA param
+    (11) expression -> expression COMMUTATOR . expression
+    (7) expression -> . expression COMPOSE expression
+    (8) expression -> . LPAREN expression RPAREN
+    (9) expression -> . NEG expression
+    (10) expression -> . expression CONJ expression
+    (11) expression -> . expression COMMUTATOR expression
+    (12) expression -> . VAR
+    (13) expression -> . DEFCOMMAND args
 
-    $end            reduce using rule 4 (command -> GENCOMMAND params .)
-    COMMA           shift and go to state 27
+    LPAREN          shift and go to state 7
+    NEG             shift and go to state 8
+    VAR             shift and go to state 22
+    DEFCOMMAND      shift and go to state 9
 
+    expression                     shift and go to state 28
 
 state 13
 
-    (17) params -> param .
+    (4) command -> GENCOMMAND params .
+    (18) params -> params . COMMA param
 
-    COMMA           reduce using rule 17 (params -> param .)
-    $end            reduce using rule 17 (params -> param .)
-    RSQBRACKET      reduce using rule 17 (params -> param .)
-    RPAREN          reduce using rule 17 (params -> param .)
+    $end            reduce using rule 4 (command -> GENCOMMAND params .)
+    COMMA           shift and go to state 29
 
 
 state 14
 
-    (18) param -> list .
+    (19) params -> param .
 
-    COMMA           reduce using rule 18 (param -> list .)
-    $end            reduce using rule 18 (param -> list .)
-    RSQBRACKET      reduce using rule 18 (param -> list .)
-    RPAREN          reduce using rule 18 (param -> list .)
+    COMMA           reduce using rule 19 (params -> param .)
+    $end            reduce using rule 19 (params -> param .)
+    RSQBRACKET      reduce using rule 19 (params -> param .)
+    RPAREN          reduce using rule 19 (params -> param .)
 
 
 state 15
 
-    (19) param -> VAR .
+    (20) param -> list .
 
-    COMMA           reduce using rule 19 (param -> VAR .)
-    $end            reduce using rule 19 (param -> VAR .)
-    RSQBRACKET      reduce using rule 19 (param -> VAR .)
-    RPAREN          reduce using rule 19 (param -> VAR .)
+    COMMA           reduce using rule 20 (param -> list .)
+    $end            reduce using rule 20 (param -> list .)
+    RSQBRACKET      reduce using rule 20 (param -> list .)
+    RPAREN          reduce using rule 20 (param -> list .)
 
 
 state 16
 
-    (20) param -> NUMBER .
+    (21) param -> VAR .
 
-    COMMA           reduce using rule 20 (param -> NUMBER .)
-    $end            reduce using rule 20 (param -> NUMBER .)
-    RSQBRACKET      reduce using rule 20 (param -> NUMBER .)
-    RPAREN          reduce using rule 20 (param -> NUMBER .)
+    COMMA           reduce using rule 21 (param -> VAR .)
+    $end            reduce using rule 21 (param -> VAR .)
+    RSQBRACKET      reduce using rule 21 (param -> VAR .)
+    RPAREN          reduce using rule 21 (param -> VAR .)
 
 
 state 17
 
-    (21) param -> BSTRING .
+    (22) param -> NUMBER .
 
-    COMMA           reduce using rule 21 (param -> BSTRING .)
-    $end            reduce using rule 21 (param -> BSTRING .)
-    RSQBRACKET      reduce using rule 21 (param -> BSTRING .)
-    RPAREN          reduce using rule 21 (param -> BSTRING .)
+    COMMA           reduce using rule 22 (param -> NUMBER .)
+    $end            reduce using rule 22 (param -> NUMBER .)
+    RSQBRACKET      reduce using rule 22 (param -> NUMBER .)
+    RPAREN          reduce using rule 22 (param -> NUMBER .)
 
 
 state 18
 
-    (15) list -> LSQBRACKET . params RSQBRACKET
-    (16) params -> . params COMMA param
-    (17) params -> . param
-    (18) param -> . list
-    (19) param -> . VAR
-    (20) param -> . NUMBER
-    (21) param -> . BSTRING
-    (15) list -> . LSQBRACKET params RSQBRACKET
+    (23) param -> BSTRING .
 
-    VAR             shift and go to state 15
-    NUMBER          shift and go to state 16
-    BSTRING         shift and go to state 17
-    LSQBRACKET      shift and go to state 18
+    COMMA           reduce using rule 23 (param -> BSTRING .)
+    $end            reduce using rule 23 (param -> BSTRING .)
+    RSQBRACKET      reduce using rule 23 (param -> BSTRING .)
+    RPAREN          reduce using rule 23 (param -> BSTRING .)
 
-    params                         shift and go to state 28
-    param                          shift and go to state 13
-    list                           shift and go to state 14
 
 state 19
 
-    (5) equation -> VAR DEFINEEQUALS . expression
-    (6) expression -> . expression COMPOSE expression
-    (7) expression -> . LPAREN expression RPAREN
-    (8) expression -> . NEG expression
-    (9) expression -> . expression CONJ expression
-    (10) expression -> . VAR
-    (11) expression -> . DEFCOMMAND args
+    (17) list -> LSQBRACKET . params RSQBRACKET
+    (18) params -> . params COMMA param
+    (19) params -> . param
+    (20) param -> . list
+    (21) param -> . VAR
+    (22) param -> . NUMBER
+    (23) param -> . BSTRING
+    (17) list -> . LSQBRACKET params RSQBRACKET
 
-    LPAREN          shift and go to state 7
-    NEG             shift and go to state 8
-    VAR             shift and go to state 21
-    DEFCOMMAND      shift and go to state 9
+    VAR             shift and go to state 16
+    NUMBER          shift and go to state 17
+    BSTRING         shift and go to state 18
+    LSQBRACKET      shift and go to state 19
 
-    expression                     shift and go to state 29
+    params                         shift and go to state 30
+    param                          shift and go to state 14
+    list                           shift and go to state 15
 
 state 20
 
-    (7) expression -> LPAREN expression . RPAREN
-    (6) expression -> expression . COMPOSE expression
-    (9) expression -> expression . CONJ expression
+    (6) equation -> VAR DEFINEEQUALS . expression
+    (7) expression -> . expression COMPOSE expression
+    (8) expression -> . LPAREN expression RPAREN
+    (9) expression -> . NEG expression
+    (10) expression -> . expression CONJ expression
+    (11) expression -> . expression COMMUTATOR expression
+    (12) expression -> . VAR
+    (13) expression -> . DEFCOMMAND args
 
-    RPAREN          shift and go to state 30
-    COMPOSE         shift and go to state 10
-    CONJ            shift and go to state 11
+    LPAREN          shift and go to state 7
+    NEG             shift and go to state 8
+    VAR             shift and go to state 22
+    DEFCOMMAND      shift and go to state 9
 
+    expression                     shift and go to state 31
 
 state 21
 
-    (10) expression -> VAR .
+    (8) expression -> LPAREN expression . RPAREN
+    (7) expression -> expression . COMPOSE expression
+    (10) expression -> expression . CONJ expression
+    (11) expression -> expression . COMMUTATOR expression
 
-    RPAREN          reduce using rule 10 (expression -> VAR .)
-    COMPOSE         reduce using rule 10 (expression -> VAR .)
-    CONJ            reduce using rule 10 (expression -> VAR .)
-    $end            reduce using rule 10 (expression -> VAR .)
+    RPAREN          shift and go to state 32
+    COMPOSE         shift and go to state 10
+    CONJ            shift and go to state 11
+    COMMUTATOR      shift and go to state 12
 
 
 state 22
 
-    (8) expression -> NEG expression .
-    (6) expression -> expression . COMPOSE expression
-    (9) expression -> expression . CONJ expression
+    (12) expression -> VAR .
 
-  ! shift/reduce conflict for COMPOSE resolved as shift
-  ! shift/reduce conflict for CONJ resolved as shift
-    $end            reduce using rule 8 (expression -> NEG expression .)
-    RPAREN          reduce using rule 8 (expression -> NEG expression .)
-    COMPOSE         shift and go to state 10
-    CONJ            shift and go to state 11
-
-  ! COMPOSE         [ reduce using rule 8 (expression -> NEG expression .) ]
-  ! CONJ            [ reduce using rule 8 (expression -> NEG expression .) ]
+    RPAREN          reduce using rule 12 (expression -> VAR .)
+    COMPOSE         reduce using rule 12 (expression -> VAR .)
+    CONJ            reduce using rule 12 (expression -> VAR .)
+    COMMUTATOR      reduce using rule 12 (expression -> VAR .)
+    $end            reduce using rule 12 (expression -> VAR .)
 
 
 state 23
 
-    (11) expression -> DEFCOMMAND args .
+    (9) expression -> NEG expression .
+    (7) expression -> expression . COMPOSE expression
+    (10) expression -> expression . CONJ expression
+    (11) expression -> expression . COMMUTATOR expression
 
-    COMPOSE         reduce using rule 11 (expression -> DEFCOMMAND args .)
-    CONJ            reduce using rule 11 (expression -> DEFCOMMAND args .)
-    $end            reduce using rule 11 (expression -> DEFCOMMAND args .)
-    RPAREN          reduce using rule 11 (expression -> DEFCOMMAND args .)
+  ! shift/reduce conflict for COMPOSE resolved as shift
+  ! shift/reduce conflict for CONJ resolved as shift
+  ! shift/reduce conflict for COMMUTATOR resolved as shift
+    $end            reduce using rule 9 (expression -> NEG expression .)
+    RPAREN          reduce using rule 9 (expression -> NEG expression .)
+    COMPOSE         shift and go to state 10
+    CONJ            shift and go to state 11
+    COMMUTATOR      shift and go to state 12
+
+  ! COMPOSE         [ reduce using rule 9 (expression -> NEG expression .) ]
+  ! CONJ            [ reduce using rule 9 (expression -> NEG expression .) ]
+  ! COMMUTATOR      [ reduce using rule 9 (expression -> NEG expression .) ]
 
 
 state 24
 
-    (14) args -> LPAREN . params RPAREN
-    (16) params -> . params COMMA param
-    (17) params -> . param
-    (18) param -> . list
-    (19) param -> . VAR
-    (20) param -> . NUMBER
-    (21) param -> . BSTRING
-    (15) list -> . LSQBRACKET params RSQBRACKET
+    (13) expression -> DEFCOMMAND args .
 
-    VAR             shift and go to state 15
-    NUMBER          shift and go to state 16
-    BSTRING         shift and go to state 17
-    LSQBRACKET      shift and go to state 18
+    COMPOSE         reduce using rule 13 (expression -> DEFCOMMAND args .)
+    CONJ            reduce using rule 13 (expression -> DEFCOMMAND args .)
+    COMMUTATOR      reduce using rule 13 (expression -> DEFCOMMAND args .)
+    $end            reduce using rule 13 (expression -> DEFCOMMAND args .)
+    RPAREN          reduce using rule 13 (expression -> DEFCOMMAND args .)
 
-    params                         shift and go to state 31
-    param                          shift and go to state 13
-    list                           shift and go to state 14
 
 state 25
 
-    (6) expression -> expression COMPOSE expression .
-    (6) expression -> expression . COMPOSE expression
-    (9) expression -> expression . CONJ expression
+    (16) args -> LPAREN . params RPAREN
+    (18) params -> . params COMMA param
+    (19) params -> . param
+    (20) param -> . list
+    (21) param -> . VAR
+    (22) param -> . NUMBER
+    (23) param -> . BSTRING
+    (17) list -> . LSQBRACKET params RSQBRACKET
 
-  ! shift/reduce conflict for COMPOSE resolved as shift
-  ! shift/reduce conflict for CONJ resolved as shift
-    $end            reduce using rule 6 (expression -> expression COMPOSE expression .)
-    RPAREN          reduce using rule 6 (expression -> expression COMPOSE expression .)
-    COMPOSE         shift and go to state 10
-    CONJ            shift and go to state 11
+    VAR             shift and go to state 16
+    NUMBER          shift and go to state 17
+    BSTRING         shift and go to state 18
+    LSQBRACKET      shift and go to state 19
 
-  ! COMPOSE         [ reduce using rule 6 (expression -> expression COMPOSE expression .) ]
-  ! CONJ            [ reduce using rule 6 (expression -> expression COMPOSE expression .) ]
-
+    params                         shift and go to state 33
+    param                          shift and go to state 14
+    list                           shift and go to state 15
 
 state 26
 
-    (9) expression -> expression CONJ expression .
-    (6) expression -> expression . COMPOSE expression
-    (9) expression -> expression . CONJ expression
+    (7) expression -> expression COMPOSE expression .
+    (7) expression -> expression . COMPOSE expression
+    (10) expression -> expression . CONJ expression
+    (11) expression -> expression . COMMUTATOR expression
 
   ! shift/reduce conflict for COMPOSE resolved as shift
   ! shift/reduce conflict for CONJ resolved as shift
-    $end            reduce using rule 9 (expression -> expression CONJ expression .)
-    RPAREN          reduce using rule 9 (expression -> expression CONJ expression .)
+  ! shift/reduce conflict for COMMUTATOR resolved as shift
+    $end            reduce using rule 7 (expression -> expression COMPOSE expression .)
+    RPAREN          reduce using rule 7 (expression -> expression COMPOSE expression .)
     COMPOSE         shift and go to state 10
     CONJ            shift and go to state 11
+    COMMUTATOR      shift and go to state 12
 
-  ! COMPOSE         [ reduce using rule 9 (expression -> expression CONJ expression .) ]
-  ! CONJ            [ reduce using rule 9 (expression -> expression CONJ expression .) ]
+  ! COMPOSE         [ reduce using rule 7 (expression -> expression COMPOSE expression .) ]
+  ! CONJ            [ reduce using rule 7 (expression -> expression COMPOSE expression .) ]
+  ! COMMUTATOR      [ reduce using rule 7 (expression -> expression COMPOSE expression .) ]
 
 
 state 27
 
-    (16) params -> params COMMA . param
-    (18) param -> . list
-    (19) param -> . VAR
-    (20) param -> . NUMBER
-    (21) param -> . BSTRING
-    (15) list -> . LSQBRACKET params RSQBRACKET
+    (10) expression -> expression CONJ expression .
+    (7) expression -> expression . COMPOSE expression
+    (10) expression -> expression . CONJ expression
+    (11) expression -> expression . COMMUTATOR expression
 
-    VAR             shift and go to state 15
-    NUMBER          shift and go to state 16
-    BSTRING         shift and go to state 17
-    LSQBRACKET      shift and go to state 18
+  ! shift/reduce conflict for COMPOSE resolved as shift
+  ! shift/reduce conflict for CONJ resolved as shift
+  ! shift/reduce conflict for COMMUTATOR resolved as shift
+    $end            reduce using rule 10 (expression -> expression CONJ expression .)
+    RPAREN          reduce using rule 10 (expression -> expression CONJ expression .)
+    COMPOSE         shift and go to state 10
+    CONJ            shift and go to state 11
+    COMMUTATOR      shift and go to state 12
 
-    param                          shift and go to state 32
-    list                           shift and go to state 14
+  ! COMPOSE         [ reduce using rule 10 (expression -> expression CONJ expression .) ]
+  ! CONJ            [ reduce using rule 10 (expression -> expression CONJ expression .) ]
+  ! COMMUTATOR      [ reduce using rule 10 (expression -> expression CONJ expression .) ]
+
 
 state 28
 
-    (15) list -> LSQBRACKET params . RSQBRACKET
-    (16) params -> params . COMMA param
+    (11) expression -> expression COMMUTATOR expression .
+    (7) expression -> expression . COMPOSE expression
+    (10) expression -> expression . CONJ expression
+    (11) expression -> expression . COMMUTATOR expression
 
-    RSQBRACKET      shift and go to state 33
-    COMMA           shift and go to state 27
+  ! shift/reduce conflict for COMPOSE resolved as shift
+  ! shift/reduce conflict for CONJ resolved as shift
+  ! shift/reduce conflict for COMMUTATOR resolved as shift
+    $end            reduce using rule 11 (expression -> expression COMMUTATOR expression .)
+    RPAREN          reduce using rule 11 (expression -> expression COMMUTATOR expression .)
+    COMPOSE         shift and go to state 10
+    CONJ            shift and go to state 11
+    COMMUTATOR      shift and go to state 12
+
+  ! COMPOSE         [ reduce using rule 11 (expression -> expression COMMUTATOR expression .) ]
+  ! CONJ            [ reduce using rule 11 (expression -> expression COMMUTATOR expression .) ]
+  ! COMMUTATOR      [ reduce using rule 11 (expression -> expression COMMUTATOR expression .) ]
 
 
 state 29
 
-    (5) equation -> VAR DEFINEEQUALS expression .
-    (6) expression -> expression . COMPOSE expression
-    (9) expression -> expression . CONJ expression
+    (18) params -> params COMMA . param
+    (20) param -> . list
+    (21) param -> . VAR
+    (22) param -> . NUMBER
+    (23) param -> . BSTRING
+    (17) list -> . LSQBRACKET params RSQBRACKET
 
-    $end            reduce using rule 5 (equation -> VAR DEFINEEQUALS expression .)
-    COMPOSE         shift and go to state 10
-    CONJ            shift and go to state 11
+    VAR             shift and go to state 16
+    NUMBER          shift and go to state 17
+    BSTRING         shift and go to state 18
+    LSQBRACKET      shift and go to state 19
 
+    param                          shift and go to state 34
+    list                           shift and go to state 15
 
 state 30
 
-    (7) expression -> LPAREN expression RPAREN .
+    (17) list -> LSQBRACKET params . RSQBRACKET
+    (18) params -> params . COMMA param
 
-    COMPOSE         reduce using rule 7 (expression -> LPAREN expression RPAREN .)
-    CONJ            reduce using rule 7 (expression -> LPAREN expression RPAREN .)
-    $end            reduce using rule 7 (expression -> LPAREN expression RPAREN .)
-    RPAREN          reduce using rule 7 (expression -> LPAREN expression RPAREN .)
+    RSQBRACKET      shift and go to state 35
+    COMMA           shift and go to state 29
 
 
 state 31
 
-    (14) args -> LPAREN params . RPAREN
-    (16) params -> params . COMMA param
+    (6) equation -> VAR DEFINEEQUALS expression .
+    (7) expression -> expression . COMPOSE expression
+    (10) expression -> expression . CONJ expression
+    (11) expression -> expression . COMMUTATOR expression
 
-    RPAREN          shift and go to state 34
-    COMMA           shift and go to state 27
+    $end            reduce using rule 6 (equation -> VAR DEFINEEQUALS expression .)
+    COMPOSE         shift and go to state 10
+    CONJ            shift and go to state 11
+    COMMUTATOR      shift and go to state 12
 
 
 state 32
 
-    (16) params -> params COMMA param .
+    (8) expression -> LPAREN expression RPAREN .
 
-    COMMA           reduce using rule 16 (params -> params COMMA param .)
-    $end            reduce using rule 16 (params -> params COMMA param .)
-    RSQBRACKET      reduce using rule 16 (params -> params COMMA param .)
-    RPAREN          reduce using rule 16 (params -> params COMMA param .)
+    COMPOSE         reduce using rule 8 (expression -> LPAREN expression RPAREN .)
+    CONJ            reduce using rule 8 (expression -> LPAREN expression RPAREN .)
+    COMMUTATOR      reduce using rule 8 (expression -> LPAREN expression RPAREN .)
+    $end            reduce using rule 8 (expression -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 8 (expression -> LPAREN expression RPAREN .)
 
 
 state 33
 
-    (15) list -> LSQBRACKET params RSQBRACKET .
+    (16) args -> LPAREN params . RPAREN
+    (18) params -> params . COMMA param
 
-    COMMA           reduce using rule 15 (list -> LSQBRACKET params RSQBRACKET .)
-    $end            reduce using rule 15 (list -> LSQBRACKET params RSQBRACKET .)
-    RSQBRACKET      reduce using rule 15 (list -> LSQBRACKET params RSQBRACKET .)
-    RPAREN          reduce using rule 15 (list -> LSQBRACKET params RSQBRACKET .)
+    RPAREN          shift and go to state 36
+    COMMA           shift and go to state 29
 
 
 state 34
 
-    (14) args -> LPAREN params RPAREN .
+    (18) params -> params COMMA param .
 
-    COMPOSE         reduce using rule 14 (args -> LPAREN params RPAREN .)
-    CONJ            reduce using rule 14 (args -> LPAREN params RPAREN .)
-    $end            reduce using rule 14 (args -> LPAREN params RPAREN .)
-    RPAREN          reduce using rule 14 (args -> LPAREN params RPAREN .)
+    COMMA           reduce using rule 18 (params -> params COMMA param .)
+    $end            reduce using rule 18 (params -> params COMMA param .)
+    RSQBRACKET      reduce using rule 18 (params -> params COMMA param .)
+    RPAREN          reduce using rule 18 (params -> params COMMA param .)
+
+
+state 35
+
+    (17) list -> LSQBRACKET params RSQBRACKET .
+
+    COMMA           reduce using rule 17 (list -> LSQBRACKET params RSQBRACKET .)
+    $end            reduce using rule 17 (list -> LSQBRACKET params RSQBRACKET .)
+    RSQBRACKET      reduce using rule 17 (list -> LSQBRACKET params RSQBRACKET .)
+    RPAREN          reduce using rule 17 (list -> LSQBRACKET params RSQBRACKET .)
+
+
+state 36
+
+    (16) args -> LPAREN params RPAREN .
+
+    COMPOSE         reduce using rule 16 (args -> LPAREN params RPAREN .)
+    CONJ            reduce using rule 16 (args -> LPAREN params RPAREN .)
+    COMMUTATOR      reduce using rule 16 (args -> LPAREN params RPAREN .)
+    $end            reduce using rule 16 (args -> LPAREN params RPAREN .)
+    RPAREN          reduce using rule 16 (args -> LPAREN params RPAREN .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for COMPOSE in state 22 resolved as shift
-WARNING: shift/reduce conflict for CONJ in state 22 resolved as shift
-WARNING: shift/reduce conflict for COMPOSE in state 25 resolved as shift
-WARNING: shift/reduce conflict for CONJ in state 25 resolved as shift
+WARNING: shift/reduce conflict for COMPOSE in state 23 resolved as shift
+WARNING: shift/reduce conflict for CONJ in state 23 resolved as shift
+WARNING: shift/reduce conflict for COMMUTATOR in state 23 resolved as shift
 WARNING: shift/reduce conflict for COMPOSE in state 26 resolved as shift
 WARNING: shift/reduce conflict for CONJ in state 26 resolved as shift
+WARNING: shift/reduce conflict for COMMUTATOR in state 26 resolved as shift
+WARNING: shift/reduce conflict for COMPOSE in state 27 resolved as shift
+WARNING: shift/reduce conflict for CONJ in state 27 resolved as shift
+WARNING: shift/reduce conflict for COMMUTATOR in state 27 resolved as shift
+WARNING: shift/reduce conflict for COMPOSE in state 28 resolved as shift
+WARNING: shift/reduce conflict for CONJ in state 28 resolved as shift
+WARNING: shift/reduce conflict for COMMUTATOR in state 28 resolved as shift

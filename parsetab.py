@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'APPLY BSTRING CHECKEQUALS COMMA COMPOSE CONJ DEFCOMMAND DEFINEEQUALS GENCOMMAND LPAREN LSQBRACKET NEG NUMBER RPAREN RSQBRACKET VARstatement  : command\n                   | equation\n                   | expressioncommand : GENCOMMAND paramsequation : VAR DEFINEEQUALS expressionexpression : expression COMPOSE expression\n               | LPAREN expression RPAREN\n               | NEG expression\n               | expression CONJ expression\n               | VAR\n               | DEFCOMMAND argsword : word APPLY expression\n                       | BSTRING args : LPAREN params RPARENlist : LSQBRACKET params RSQBRACKETparams : params COMMA param\n                      | paramparam : list \n                     | VAR \n                     | NUMBER \n                     | BSTRING'
+_lr_signature = 'APPLY BSTRING CHECKEQUALS COMMA COMMUTATOR COMPOSE CONJ DEFCOMMAND DEFINEEQUALS GENCOMMAND LPAREN LSQBRACKET NEG NUMBER RPAREN RSQBRACKET VARstatement  : command\n                   | equation\n                   | expressioncommand : GENCOMMAND params\n                    | GENCOMMANDequation : VAR DEFINEEQUALS expressionexpression : expression COMPOSE expression\n               | LPAREN expression RPAREN\n               | NEG expression\n               | expression CONJ expression\n               | expression COMMUTATOR expression\n               | VAR\n               | DEFCOMMAND argsword : word APPLY expression\n                       | BSTRING args : LPAREN params RPARENlist : LSQBRACKET params RSQBRACKETparams : params COMMA param\n                      | paramparam : list \n                     | VAR\n                     | NUMBER \n                     | BSTRING'
     
-_lr_action_items = {'GENCOMMAND':([0,],[5,]),'VAR':([0,5,7,8,10,11,18,19,24,27,],[6,15,21,21,21,21,15,21,15,15,]),'LPAREN':([0,7,8,9,10,11,19,],[7,7,7,24,7,7,7,]),'NEG':([0,7,8,10,11,19,],[8,8,8,8,8,8,]),'DEFCOMMAND':([0,7,8,10,11,19,],[9,9,9,9,9,9,]),'$end':([1,2,3,4,6,12,13,14,15,16,17,21,22,23,25,26,29,30,32,33,34,],[0,-1,-2,-3,-10,-4,-17,-18,-19,-20,-21,-10,-8,-11,-6,-9,-5,-7,-16,-15,-14,]),'COMPOSE':([4,6,20,21,22,23,25,26,29,30,34,],[10,-10,10,-10,10,-11,10,10,10,-7,-14,]),'CONJ':([4,6,20,21,22,23,25,26,29,30,34,],[11,-10,11,-10,11,-11,11,11,11,-7,-14,]),'NUMBER':([5,18,24,27,],[16,16,16,16,]),'BSTRING':([5,18,24,27,],[17,17,17,17,]),'LSQBRACKET':([5,18,24,27,],[18,18,18,18,]),'DEFINEEQUALS':([6,],[19,]),'COMMA':([12,13,14,15,16,17,28,31,32,33,],[27,-17,-18,-19,-20,-21,27,27,-16,-15,]),'RSQBRACKET':([13,14,15,16,17,28,32,33,],[-17,-18,-19,-20,-21,33,-16,-15,]),'RPAREN':([13,14,15,16,17,20,21,22,23,25,26,30,31,32,33,34,],[-17,-18,-19,-20,-21,30,-10,-8,-11,-6,-9,-7,34,-16,-15,-14,]),}
+_lr_action_items = {'GENCOMMAND':([0,],[5,]),'VAR':([0,5,7,8,10,11,12,19,20,25,29,],[6,16,22,22,22,22,22,16,22,16,16,]),'LPAREN':([0,7,8,9,10,11,12,20,],[7,7,7,25,7,7,7,7,]),'NEG':([0,7,8,10,11,12,20,],[8,8,8,8,8,8,8,]),'DEFCOMMAND':([0,7,8,10,11,12,20,],[9,9,9,9,9,9,9,]),'$end':([1,2,3,4,5,6,13,14,15,16,17,18,22,23,24,26,27,28,31,32,34,35,36,],[0,-1,-2,-3,-5,-12,-4,-19,-20,-21,-22,-23,-12,-9,-13,-7,-10,-11,-6,-8,-18,-17,-16,]),'COMPOSE':([4,6,21,22,23,24,26,27,28,31,32,36,],[10,-12,10,-12,10,-13,10,10,10,10,-8,-16,]),'CONJ':([4,6,21,22,23,24,26,27,28,31,32,36,],[11,-12,11,-12,11,-13,11,11,11,11,-8,-16,]),'COMMUTATOR':([4,6,21,22,23,24,26,27,28,31,32,36,],[12,-12,12,-12,12,-13,12,12,12,12,-8,-16,]),'NUMBER':([5,19,25,29,],[17,17,17,17,]),'BSTRING':([5,19,25,29,],[18,18,18,18,]),'LSQBRACKET':([5,19,25,29,],[19,19,19,19,]),'DEFINEEQUALS':([6,],[20,]),'COMMA':([13,14,15,16,17,18,30,33,34,35,],[29,-19,-20,-21,-22,-23,29,29,-18,-17,]),'RSQBRACKET':([14,15,16,17,18,30,34,35,],[-19,-20,-21,-22,-23,35,-18,-17,]),'RPAREN':([14,15,16,17,18,21,22,23,24,26,27,28,32,33,34,35,36,],[-19,-20,-21,-22,-23,32,-12,-9,-13,-7,-10,-11,-8,36,-18,-17,-16,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statement':([0,],[1,]),'command':([0,],[2,]),'equation':([0,],[3,]),'expression':([0,7,8,10,11,19,],[4,20,22,25,26,29,]),'params':([5,18,24,],[12,28,31,]),'param':([5,18,24,27,],[13,13,13,32,]),'list':([5,18,24,27,],[14,14,14,14,]),'args':([9,],[23,]),}
+_lr_goto_items = {'statement':([0,],[1,]),'command':([0,],[2,]),'equation':([0,],[3,]),'expression':([0,7,8,10,11,12,20,],[4,21,23,26,27,28,31,]),'params':([5,19,25,],[13,30,33,]),'param':([5,19,25,29,],[14,14,14,34,]),'list':([5,19,25,29,],[15,15,15,15,]),'args':([9,],[24,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,25 +27,27 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> statement","S'",1,None,None,None),
-  ('statement -> command','statement',1,'p_statement','engine.py',95),
-  ('statement -> equation','statement',1,'p_statement','engine.py',96),
-  ('statement -> expression','statement',1,'p_statement','engine.py',97),
-  ('command -> GENCOMMAND params','command',2,'p_command','engine.py',101),
-  ('equation -> VAR DEFINEEQUALS expression','equation',3,'p_equation','engine.py',106),
-  ('expression -> expression COMPOSE expression','expression',3,'p_expression','engine.py',111),
-  ('expression -> LPAREN expression RPAREN','expression',3,'p_expression','engine.py',112),
-  ('expression -> NEG expression','expression',2,'p_expression','engine.py',113),
-  ('expression -> expression CONJ expression','expression',3,'p_expression','engine.py',114),
-  ('expression -> VAR','expression',1,'p_expression','engine.py',115),
-  ('expression -> DEFCOMMAND args','expression',2,'p_expression','engine.py',116),
-  ('word -> word APPLY expression','word',3,'p_apply','engine.py',141),
-  ('word -> BSTRING','word',1,'p_apply','engine.py',142),
-  ('args -> LPAREN params RPAREN','args',3,'p_args','engine.py',153),
-  ('list -> LSQBRACKET params RSQBRACKET','list',3,'p_list','engine.py',157),
-  ('params -> params COMMA param','params',3,'p_params','engine.py',161),
-  ('params -> param','params',1,'p_params','engine.py',162),
-  ('param -> list','param',1,'p_param','engine.py',169),
-  ('param -> VAR','param',1,'p_param','engine.py',170),
-  ('param -> NUMBER','param',1,'p_param','engine.py',171),
-  ('param -> BSTRING','param',1,'p_param','engine.py',172),
+  ('statement -> command','statement',1,'p_statement','engine.py',102),
+  ('statement -> equation','statement',1,'p_statement','engine.py',103),
+  ('statement -> expression','statement',1,'p_statement','engine.py',104),
+  ('command -> GENCOMMAND params','command',2,'p_command','engine.py',108),
+  ('command -> GENCOMMAND','command',1,'p_command','engine.py',109),
+  ('equation -> VAR DEFINEEQUALS expression','equation',3,'p_equation','engine.py',117),
+  ('expression -> expression COMPOSE expression','expression',3,'p_expression','engine.py',122),
+  ('expression -> LPAREN expression RPAREN','expression',3,'p_expression','engine.py',123),
+  ('expression -> NEG expression','expression',2,'p_expression','engine.py',124),
+  ('expression -> expression CONJ expression','expression',3,'p_expression','engine.py',125),
+  ('expression -> expression COMMUTATOR expression','expression',3,'p_expression','engine.py',126),
+  ('expression -> VAR','expression',1,'p_expression','engine.py',127),
+  ('expression -> DEFCOMMAND args','expression',2,'p_expression','engine.py',128),
+  ('word -> word APPLY expression','word',3,'p_apply','engine.py',160),
+  ('word -> BSTRING','word',1,'p_apply','engine.py',161),
+  ('args -> LPAREN params RPAREN','args',3,'p_args','engine.py',172),
+  ('list -> LSQBRACKET params RSQBRACKET','list',3,'p_list','engine.py',176),
+  ('params -> params COMMA param','params',3,'p_params','engine.py',180),
+  ('params -> param','params',1,'p_params','engine.py',181),
+  ('param -> list','param',1,'p_param','engine.py',188),
+  ('param -> VAR','param',1,'p_param','engine.py',189),
+  ('param -> NUMBER','param',1,'p_param','engine.py',190),
+  ('param -> BSTRING','param',1,'p_param','engine.py',191),
 ]

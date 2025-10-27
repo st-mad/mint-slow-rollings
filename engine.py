@@ -25,6 +25,7 @@ class M_Lexer:
        'COMPOSE',
        'NEG',
        'CONJ',
+       'COMMUTATOR',
        'LPAREN',
        'RPAREN',
        'LSQBRACKET',
@@ -43,6 +44,7 @@ class M_Lexer:
     t_COMPOSE = r'\*'
     t_NEG = r'\!'
     t_CONJ = r'\^'
+    t_COMMUTATOR = r'\#'
     t_LPAREN  = r'\('
     t_RPAREN  = r'\)'
     t_LSQBRACKET  = r'\['
@@ -51,10 +53,13 @@ class M_Lexer:
     t_VAR = r'[a-zA-Z][a-zA-Z0-9]*'
     t_BSTRING = r"""('[01]+')|("[01]+")"""
     t_APPLY = r'\|'
-    t_DEFCOMMAND = r'(def_from_dfs)|(def_from_achains)'
+    # add inline commands here too
+    t_DEFCOMMAND = r'(def_from_dfs)|(def_from_achains)|(revealing)'
     t_NUMBER = r'[0-9]+'
     # t_BOOLEAN = r'(true)|(false)'
 
+
+    # t_DEFCOMMAND = '|'.join(repr(x) for x in command_map.keys())
     
     # Define a rule so we can track line numbers
     def t_newline(self,t):
@@ -85,10 +90,14 @@ class M_Lexer:
         return self.tokens
 
 class M_Parser():
-    def __init__(self, my_lex, dictionary = None):
+    def __init__(self, my_lex, dictionary = None, command_map = None):
         self.variables = {}
+        self.command_map = {}
         if dictionary is not None:
             self.variables = self.variables | dictionary
+        if command_map is not None: 
+            self.command_map = self.command_map | command_map
+
         self.command_queue = []
         tokens = my_lex.get_tokens()
 
@@ -99,9 +108,13 @@ class M_Parser():
             p[0] = p[1]
 
         def p_command(p):
-            'command : GENCOMMAND params'
+            '''command : GENCOMMAND params
+                    | GENCOMMAND'''
             # print("appending to command queue", p[1], p[2])
-            self.command_queue.append((p[1], p[2]))
+            if len(p) == 3:
+                self.command_queue.append((p[1], p[2]))
+            else:
+                self.command_queue.append((p[1], None))
 
         def p_equation(p):
             'equation : VAR DEFINEEQUALS expression'
@@ -113,24 +126,36 @@ class M_Parser():
                | LPAREN expression RPAREN
                | NEG expression
                | expression CONJ expression
+               | expression COMMUTATOR expression
                | VAR
                | DEFCOMMAND args'''
             if len(p) == 4 and p[2] == '*':
                 p[0] = V.product(p[1], p[3])
             elif len(p) == 4 and p[2] == '^':
                 p[0] = V.conjugate(p[1], p[3])
+            elif len(p) == 4 and p[2] == '#':
+                p[0] = V.commutator(p[1], p[3])
             elif len(p) == 3:
                 if p[1] == '!':
                     p[0] = V.invert(p[2])
-                elif p[1] == "def_from_achains":
-                    print(p[2])
-                    p[0] = V.init_with_antichains(p[2][0],p[2][1], p[2][2])
-                    #debug
-                    # print(p[0].D, p[0].R)
-                elif p[1] == "def_from_dfs":
-                    #debug
-                    p[0] = V.init_with_DFS(p[2][0],p[2][1],p[2][2])
-                    # print(p[0].D, p[0].R)
+                # add inline commands here
+                # Theres a choice here whether to expand inline commands to a bigger system or let them be hardcoded into the parser here.
+                elif p[1] in self.command_map:
+                    ### pass in the list of parameters as a tuple into the function specified by the command_map, * operator allows us to pass a tuple as positional arguments.
+                    # TODO FIX BUG WHERE INLINE STRING VARIABLE NAMES
+                    # for i in range(len(p[2])):
+                        # if p[2][i] is str and p[2][i] in self.variables:
+                            # p[2][i] = self.variables[p[2][i]]
+                    p[0] = self.command_map[p[1]](*tuple(p[2]))
+                # elif p[1] == "def_from_achains":
+                    # # print(p[2])
+                    # p[0] = V.init_with_antichains(p[2][0],p[2][1], p[2][2])
+                    # #debug
+                    # # print(p[0].D, p[0].R)
+                # elif p[1] == "def_from_dfs":
+                    # #debug
+                    # p[0] = V.init_with_DFS(p[2][0],p[2][1],p[2][2])
+                    # # print(p[0].D, p[0].R)
             elif len(p) == 4 and type(p[2]) == V:
                 p[0] = p[2]
             elif len(p) == 2:
@@ -170,13 +195,16 @@ class M_Parser():
             # this param may not be just VAR
             # why isnt a param an expression
             '''param : list 
-                     | VAR 
+                     | VAR
                      | NUMBER 
                      | BSTRING'''
             if type(p[1]) is list:
                 p[0] = p[1]
             elif re.compile("""('[01]+')|("[01]+")""").match(p[1]) is not None:
                 p[0] = p[1][1:-1]
+            # elif type(p[1]) is V:
+                # p[0] = p[1]
+                # and change VAR to expression
             elif p[1].isdigit():
                 p[0] = int(p[1])
             else:
@@ -259,9 +287,17 @@ class Engine:
                # | def_from_dfs
     """ 
     def __init__(self, startup_var={}):
+        #add inline commands here
+        command_map = {
+                    "def_from_dfs" : V.init_with_DFS, 
+                    "def_from_achains" : V.init_with_antichains,
+                    "revealing" : lambda x : V.make_revealing(self.get_variables()[x])
+            }
+
+
         self.lexer = M_Lexer()
         self.lexer.build()
-        self.parser = M_Parser(self.lexer, startup_var)
+        self.parser = M_Parser(self.lexer, startup_var, command_map)
         self.visualiser = Visualiser()
 
     def parse_string(self, string, debug=False):
@@ -275,26 +311,36 @@ class Engine:
             return self.parser.command_queue.pop()
         return None
 
-    def exec_command(self):
+    #### DO NOT USE
+    def exec_command(self, fig=None, ax=None):
+        # used to implement cli (we are moving the functionality to ui.)
         command = self.get_command()
         if command != None:
 
             variables = self.get_variables()
             if command[0] == "/show":
-                print("executing command", command)
+                print("executing command", command, variables[command[1]])
                 for i in command[1]:
                     print(variables[i])
-                    self.visualiser.show_element(variables[i]) 
+                    # self.visualiser.show_element(variables[i]) 
+                    self.visualiser.show_element(variables[i], fig=fig,ax=ax) 
+
                     # print(variables[i])
             elif command[0] == '/makerevealing':
                 print("Making tree pair revealing")
                 for i in command[1]:
                     variables[i] = variables[i].make_revealing()
+            elif command[0] == '/clear':
+                self.ax.clear()
+                self.ax.set_facecolor("#222222")
+                self.canvas.draw()
+                self.log.insert(tk.END, "🧹 Cleared plot.\n\n", "info")
+
 
 
 class Visualiser:
     def __init__(self):
-        pass 
+        pass
     def _rec_digraph_from_antichain(self, antichain, root, G):
 
         # checking if our tree passes the antichain boundary
@@ -335,7 +381,7 @@ class Visualiser:
 
         perm = v.permutation
 
-        ###### This is incorrect ######
+        ###### This is incorrect ###### TODO INDEX ERRORS TOO WHAT)
         leaves_of_L = sorted([v for v, d in L.out_degree() if d == 0])
         L_labels = {}
         for i in range(len(leaves_of_L)):
@@ -357,13 +403,38 @@ class Visualiser:
 
         posR = nx.drawing.nx_agraph.graphviz_layout(R, prog="dot")
 
+
         nx.draw(L,posL,ax[0],labels = a, with_labels=True)
         nx.draw(R,posR,ax[1],labels = b, with_labels=True)
         plt.show()
 
 
+    def show_element_embedded(self,v, fig=None, ax=None):
+        if fig is None or ax is None:
+            fig, ax = plt.subplots(1,2)
+        (L,R,(a,b)) = self.digraph_pair_from_element(v)
+        # plt.sca(ax[0])
+        # plt.sca(ax[1])
 
-    
+        # tree pair visualisation code
+        posL = nx.drawing.nx_agraph.graphviz_layout(L, prog="dot")
+
+        posR = nx.drawing.nx_agraph.graphviz_layout(R, prog="dot")
+
+
+        # ax[0].set_facecolor('white')
+        # ax[1].set_facecolor('white')
+
+        nx.draw_networkx(L,posL, False,ax =ax[0],labels = a,node_size=0, edge_color='white', font_size=15, font_color='white')
+        nx.draw_networkx(R,posR, False,ax =ax[1],labels = b, node_size=0, edge_color='white', font_size=15, font_color='white')
+
+        # nx.display(L,ax[0], pos = posL,node_label = a, with_labels=True)
+
+        # nx.display(R,ax[1], pos = posR, node_label = b, with_labels=True)
+        # nx.draw_networkx_labels(L, posL, labels = a, ax=ax[0])
+        # plt.show()
+
+
 
    
 

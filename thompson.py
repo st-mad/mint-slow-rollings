@@ -407,6 +407,23 @@ class V:
         """
         # returns c^-1 g c (right actions for now)
         return self.product(self.product(self.invert(c), g), c)
+    @classmethod
+    def commutator(self, a, b):
+        """Computes the commutator of a,b
+
+        Args:
+            a (V): The tree pair in V
+            b (V): The tree pair in V 
+
+        Returns:
+            V: returns [a,b] = a^-1 * b^-1 * a * b 
+        """
+        ainv = self.invert(a)
+        binv = self.invert(b)
+        term1  = self.product(ainv, binv)
+        term2 = self.product(a,b)
+        return self.product(term1,term2)
+
     
     @classmethod 
     def is_equal(self, a, b):
@@ -515,6 +532,12 @@ class V:
 
     def make_revealing(self, g, debug):
         return Chains.make_revealing(self, g, debug)
+
+    @classmethod
+    def make_revealing(self, a):
+        res = deepcopy(a)
+        Chains.make_revealing(res)
+        return res
      
 
 
