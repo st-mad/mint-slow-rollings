@@ -381,7 +381,7 @@ class Visualiser:
         L = self.digraph_from_antichain(v.D)
         R = self.digraph_from_antichain(v.R)
 
-        perm = v.permutation
+        perm = v.get_element_permutation()
 
         ###### This is incorrect ###### TODO INDEX ERRORS TOO WHAT)
         leaves_of_L = sorted([v for v, d in L.out_degree() if d == 0])

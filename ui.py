@@ -183,6 +183,7 @@ class UI:
                 # print("executing command", command, variables[command[1][0]])
                 for i in command[1]:
                     # self.visualiser.show_element(variables[i]) 
+                    print(variables[i].get_element_permutation())
                     self.engine.visualiser.show_element_embedded(variables[i], fig=self.fig,ax=self.axes) 
 
             elif command[0] == '/makerevealing':

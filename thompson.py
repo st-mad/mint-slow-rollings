@@ -16,7 +16,6 @@ class V:
         self.D = D
         self.R = R
         self.validate()
-        self.permutation = self._get_perm(R)
     
     def __repr__(self):  
         """Used for printing the group element's data"""
@@ -26,7 +25,7 @@ class V:
         """Used for printing the group element's data"""
         return "Group element: D:%s R:%s" % (self.D, self.R)  
 
-    def _get_perm(self, P):
+    def _get_inverting_perm(self, P):
         """Gets the permutation that gets P from the sorted version of P"""
         S = sorted(P)
         perm = [S.index(p) for p in P]
@@ -42,7 +41,7 @@ class V:
     def _normalise_permutation(self):
         """After certain procedures the lists V.D may become unsorted, here we want to maintain that D is sorted while respecting our permutation."""
 
-        permutation = self._get_perm(self.D)
+        permutation = self._get_inverting_perm(self.D)
         # we want to invert this permutation on V.D and V.R. This should sort V.D and potentially scramble V.R
         for i in range(len(permutation)):
             j = permutation[i]
@@ -51,7 +50,10 @@ class V:
                 self._swap(self.R, i, j)
                 self._swap(permutation, i, j)
 
+    
 
+    def get_element_permutation(self):
+        return self._get_inverting_perm(self._get_inverting_perm(self.R))
 
     @classmethod 
     def init_with_DFS(self,dfsD, dfsR, perm):
