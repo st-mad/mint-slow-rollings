@@ -65,6 +65,5 @@ Examples:
 2. /show expression doesnt work, but d := expression, then /show d works. (bug)
 3. Variables are not saved on stopping the script.(feature: but I plan to implement a saved state, to fix this.)
 4. The current restrictions on what is a variable or an expression and the restrictions on what characters are allowed are a bit inconsistent. (bug: This requires messing with the parser's grammar but I will change this to be more consistent.)
-5. The labelling of leaves in the tree pair drawing is incorrect! (bug: major)
-6. /show command does not work on certain terminals. (bug: working on a fix)
+5. /show command does not work on certain terminals. (bug: working on a fix)
 
