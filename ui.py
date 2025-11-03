@@ -152,8 +152,11 @@ class UI:
 
     def _show_help(self):
         help_text = (
-            "Available Commands:\n"
-            "Not yet written \n"
+            "/show variable_name : plots the tree pair associated with the variable_name \n"
+            "/print variable_name : Writes the antichains to the log.\n"
+            "/help : Displays the available commands.\n"
+            "/clear : Clears the drawns tree pairs\n"
+            "/var : Shows the currently available variables.\n"
             "Use 'Toggle Layout' to switch between vertical or side-by-side view."
         )
         self.log.insert(tk.END, help_text + "\n\n", "info")
