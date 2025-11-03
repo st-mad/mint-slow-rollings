@@ -372,7 +372,8 @@ class Visualiser:
         G = nx.DiGraph()
         root = "empty"
         G.add_node(root)
-        if len(antichain) == 0:
+        if len(antichain) == 1:
+            print(antichain)
             return G
         self._rec_digraph_from_antichain(antichain, root, G)
         return G
@@ -383,7 +384,6 @@ class Visualiser:
 
         perm = v.get_element_permutation()
 
-        ###### This is incorrect ###### TODO INDEX ERRORS TOO WHAT)
         leaves_of_L = sorted([v for v, d in L.out_degree() if d == 0])
         L_labels = {}
         for i in range(len(leaves_of_L)):
