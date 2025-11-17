@@ -54,7 +54,7 @@ class M_Lexer:
     t_BSTRING = r"""('[01]+')|("[01]+")"""
     t_APPLY = r'\|'
     # add inline commands here too
-    t_DEFCOMMAND = r'(def_from_dfs)|(def_from_achains)|(revealing)'
+    t_DEFCOMMAND = r'(def_from_dfs)|(def_from_achains)|(revealing)|(minimal)'
     t_NUMBER = r'[0-9]+'
     # t_BOOLEAN = r'(true)|(false)'
 
@@ -107,6 +107,12 @@ class M_Parser():
                    | expression'''
             p[0] = p[1]
 
+            if p[1] is not None:
+                print("setting this to previous", p[1])
+                self.variables["previous"] = p[1]
+                self.command_queue.append(("/default", ["previous"]))
+
+
         def p_command(p):
             '''command : GENCOMMAND params
                     | GENCOMMAND'''
@@ -118,7 +124,7 @@ class M_Parser():
 
         def p_equation(p):
             'equation : VAR DEFINEEQUALS expression'
-            p[0] = p[1] # I believe this works, but has the side effect of allowing inline definitions with (varname := deffunc())
+            p[0] = p[3] # I believe this works, but has the side effect of allowing inline definitions with (varname := deffunc())
             self.variables[p[1]] = p[3]
 
         def p_expression(p):
@@ -147,6 +153,7 @@ class M_Parser():
                         # if p[2][i] is str and p[2][i] in self.variables:
                             # p[2][i] = self.variables[p[2][i]]
                     p[0] = self.command_map[p[1]](*tuple(p[2]))
+                    print(p[0])
                 # elif p[1] == "def_from_achains":
                     # # print(p[2])
                     # p[0] = V.init_with_antichains(p[2][0],p[2][1], p[2][2])
@@ -287,11 +294,12 @@ class Engine:
                # | def_from_dfs
     """ 
     def __init__(self, startup_var={}):
-        #add inline commands here
+        #add inline commands here, must also add to the lexer. sadly I can't automate this.
         command_map = {
                     "def_from_dfs" : V.init_with_DFS, 
                     "def_from_achains" : V.init_with_antichains,
-                    "revealing" : lambda x : V.make_revealing(self.get_variables()[x])
+                    "revealing" : lambda x : V.make_revealing(self.get_variables()[x]),
+                    "minimal" : lambda x : V.minimal(self.get_variables()[x])
             }
 
 
@@ -334,7 +342,7 @@ class Engine:
                 self.ax.clear()
                 self.ax.set_facecolor("#222222")
                 self.canvas.draw()
-                self.log.insert(tk.END, "🧹 Cleared plot.\n\n", "info")
+                # self.log.insert(tk.END, "🧹 Cleared plot.\n\n", "info")
 
 
 

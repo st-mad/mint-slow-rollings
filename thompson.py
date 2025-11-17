@@ -288,7 +288,7 @@ class V:
         """        
         while self._rec_minimise():
             self._rec_minimise()
-
+    
     @classmethod
     def invert(self, a):
         """Generates a tree pair that is the inverse of a.
@@ -540,6 +540,14 @@ class V:
         res = deepcopy(a)
         Chains.make_revealing(res)
         return res
+
+    @classmethod
+    def minimal(self, element):
+        res = deepcopy(element)
+        res.minimise()
+        return res
+
+
      
 
 

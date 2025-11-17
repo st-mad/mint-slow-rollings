@@ -162,6 +162,21 @@ class UI:
         self.log.insert(tk.END, help_text + "\n\n", "info")
         self.log.see(tk.END)
 
+    def _clear(self):
+        for ax in self.axes:
+            ax.clear()
+            # ax.set_facecolor("#222222")
+        self.canvas.draw()
+        self.log.insert(tk.END, "Cleared both plots.\n\n", "info")
+
+    
+    def _show(self, command, variables):
+        # print("executing command", command, variables[command[1][0]])
+        for i in command[1]:
+            # self.visualiser.show_element(variables[i]) 
+            # print(variables[i].get_element_permutation())
+            self.engine.visualiser.show_element_embedded(variables[i], fig=self.fig,ax=self.axes) 
+
     def _process_command(self, event=None):
             command = self.entry.get().strip()
             self.entry.delete(0, tk.END)
@@ -182,24 +197,15 @@ class UI:
             variables = self.engine.get_variables()
             # print(command)
             self.log.insert(tk.END, f"Executing command {command}\n")
-            if command[0] == "/show":
-                # print("executing command", command, variables[command[1][0]])
-                for i in command[1]:
-                    # self.visualiser.show_element(variables[i]) 
-                    print(variables[i].get_element_permutation())
-                    self.engine.visualiser.show_element_embedded(variables[i], fig=self.fig,ax=self.axes) 
-
-            elif command[0] == '/makerevealing':
-                # I want to change this one to an inline command
-                # print("Making tree pair revealing")
-                for i in command[1]:
-                    variables[i] = variables[i].make_revealing()
+            if command[0] == "/default":
+                # this is simply the command run when we type in an expression or set a variable.
+                self._clear()
+                self._show(command, variables)
+            elif command[0] == "/show":
+                self._clear()
+                self._show(command, variables)
             elif command[0] == '/clear':
-                for ax in self.axes:
-                    ax.clear()
-                    # ax.set_facecolor("#222222")
-                self.canvas.draw()
-                self.log.insert(tk.END, "Cleared both plots.\n\n", "info")
+                self._clear()
             elif command[0] == "/help":
                 self._show_help()
             elif command[0] == "/var":
