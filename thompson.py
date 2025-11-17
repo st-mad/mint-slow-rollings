@@ -569,7 +569,7 @@ class Chain:
         # print(self.chain)
         d_union_r = function.D + function.R
         d_intersect_r= function.get_neutral_leaves()
-        self.type = "SS"
+        self.type = "S"
         if len(self.chain) == 0:
             # can't classify and ungenerated chain
             raise Exception("Attempting to classify empty chain.")
