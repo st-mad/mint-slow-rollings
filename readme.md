@@ -11,6 +11,7 @@ Run ui.py for the GUI. (intended)
 #### Slash commands:
 ```
 /show variable_name : plots the tree pair associated with the variable_name 
+An expression outside of any commands will now run the /show command.
 /print variable_name : Writes the antichains to the log.
 /help : Displays the available commands.
 /clear : Clears the drawns tree pairs
@@ -35,7 +36,8 @@ b := def_from_achains(...)
 
 #### Other inline commands:
 ```
-revealing(varname) : returns a revealing pair for the given tree pair. 
+revealing(varname) : returns a revealing pair for the given tree pair.
+minimal(varname) : returns the minimal tree pair for the element.
 ```
 
 #### Algebraic operations:
